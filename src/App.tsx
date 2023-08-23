@@ -14,7 +14,8 @@ function App() {
 
   console.log(windowSize);
 
-  function sendEmail() {
+  function sendEmail(confirm: React.MouseEvent<HTMLButtonElement>) {
+    confirm.preventDefault();
     // Verificar se o email é valido antes de permitir o envio
     if (isValidEmail(email)) {
       setValidEmail(true); //Reseta a validação do email ao enviar com sucesso
@@ -22,6 +23,11 @@ function App() {
     } else {
       setValidEmail(false); //Define a validação de email como falsa se o email não for válido
     }
+  }
+
+  function formReturn() {
+    setSend(false);
+    setEmail("");
   }
 
   function isValidEmail(email: any) {
@@ -40,7 +46,7 @@ function App() {
             <span className="email">{email}</span>. Please open it and click the
             button inside to confirm your subscription
           </p>
-          <a className="congratulations-button" onClick={() => setSend(false)}>
+          <a className="congratulations-button" onClick={() => formReturn()}>
             Dismiss message
           </a>
         </div>
@@ -91,9 +97,13 @@ function App() {
                 required={true}
                 onChange={(value) => setEmail(value.target.value)}
                 className={validEmail ? "" : "invalid-email"}
+                value={email}
               />
 
-              <button className="button" onClick={() => sendEmail()}>
+              <button
+                className="button"
+                onClick={(confirm) => sendEmail(confirm)}
+              >
                 Subscribe to monthly newsletter
               </button>
             </form>
