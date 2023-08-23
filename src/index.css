@@ -113,6 +113,10 @@ input {
     font-weight: 700;
 }
 
+.invalid-email {
+    border: 1px solid red;
+}
+
 .congratulations-button {
     width: 100%;
     margin: 20px 0;

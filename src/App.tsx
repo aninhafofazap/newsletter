@@ -7,11 +7,22 @@ import "./App.css";
 
 function App() {
   const [email, setEmail] = useState("");
-
   const [send, setSend] = useState(false);
+  const [validEmail, setValidEmail] = useState(true); // Estado para rastrear a validade do email
 
   function sendEmail() {
-    setSend(true);
+    // Verificar se o email é valido antes de permitir o envio
+    if (isValidEmail(email)) {
+      setValidEmail(true); //Reseta a validação do email ao enviar com sucesso
+      setSend(true);
+    } else {
+      setValidEmail(false); //Define a validação de email como falsa se o email não for válido
+    }
+  }
+
+  function isValidEmail(email: any) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 
   return (
@@ -64,7 +75,13 @@ function App() {
                 placeholder="email@company.com"
                 required={true}
                 onChange={(value) => setEmail(value.target.value)}
+                className={validEmail ? "" : "invalid-email"}
               />
+              {!validEmail && (
+                <p className="error-message">
+                  Please enter a valid email address
+                </p>
+              )}
               <button className="button" onClick={() => sendEmail()}>
                 Subscribe to monthly newsletter
               </button>
