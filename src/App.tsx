@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import background from "./assets/images/illustration-sign-up-mobile.svg";
+import React, { useRef, useState } from "react";
+import backgroundMobile from "./assets/images/illustration-sign-up-mobile.svg";
+import backgroundDesktop from "./assets/images/illustration-sign-up-desktop.svg";
 import list from "./assets/images/icon-list.svg";
 import success from "./assets/images/icon-success.svg";
 
@@ -9,6 +10,9 @@ function App() {
   const [email, setEmail] = useState("");
   const [send, setSend] = useState(false);
   const [validEmail, setValidEmail] = useState(true); // Estado para rastrear a validade do email
+  const windowSize = useRef([window.innerWidth, window.innerHeight]);
+
+  console.log(windowSize);
 
   function sendEmail() {
     // Verificar se o email é valido antes de permitir o envio
@@ -26,7 +30,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className="container">
       {send ? (
         <div className="success-congratulations">
           <img src={success} alt="" className="congratulations-img" />
@@ -42,7 +46,11 @@ function App() {
         </div>
       ) : (
         <div className="App">
-          <img src={background} alt="" />
+          {windowSize.current[0] < 959 ? (
+            <img src={backgroundMobile} alt="" />
+          ) : (
+            <img src={backgroundDesktop} alt="" />
+          )}
           <div className="about">
             <h1 className="title">Stay Updated!</h1>
             <p className="description">
@@ -67,7 +75,14 @@ function App() {
               </li>
             </ul>
             <form>
-              <label className="email-title">Email address</label>
+              <label className="email-title">
+                Email address{" "}
+                {!validEmail && (
+                  <span className="error-message">
+                    Please enter a valid email address
+                  </span>
+                )}
+              </label>
               <input
                 type="email"
                 id="email"
@@ -77,11 +92,7 @@ function App() {
                 onChange={(value) => setEmail(value.target.value)}
                 className={validEmail ? "" : "invalid-email"}
               />
-              {!validEmail && (
-                <p className="error-message">
-                  Please enter a valid email address
-                </p>
-              )}
+
               <button className="button" onClick={() => sendEmail()}>
                 Subscribe to monthly newsletter
               </button>
@@ -89,7 +100,7 @@ function App() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 
